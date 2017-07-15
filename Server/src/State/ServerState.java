@@ -36,7 +36,8 @@ public class ServerState implements JSONSerializable
 	private String currentAnswer;
 	private JSONHashMap<Integer, String> givenAnswers = new JSONHashMap<>();
 	private JSONHashMap<Integer, String> answerStates = new JSONHashMap<>();
-	private ArrayList<Country> countries;
+	private ArrayList<Country> countries = new ArrayList<>();
+	private Country            currentCountry;
 
 	public void addUser(User user)
 	{
@@ -96,14 +97,18 @@ public class ServerState implements JSONSerializable
 		return this.givenAnswers.keySet().size() == this.users.size();
 	}
 
-	public void addCountry(Country c) {
+	public void addCountry(Country c)
+	{
 		this.countries.add(c);
 	}
 
-	public Country getRandomCountry(String excludedCountry) {
+	public Country getRandomCountry(String excludedCountry)
+	{
 		ArrayList<Country> validCountries = new ArrayList<>();
-		for (Country c : this.countries) {
-			if (c.getCountryCode().equals(excludedCountry)) {
+		for (Country c : this.countries)
+		{
+			if (c.getCountryCode().equals(excludedCountry))
+			{
 				continue;
 			}
 
@@ -112,6 +117,16 @@ public class ServerState implements JSONSerializable
 
 		int index = (new Random()).nextInt(validCountries.size());
 		return validCountries.get(index);
+	}
+
+	public void setCurrentCountry(Country country)
+	{
+		this.currentCountry = country;
+	}
+
+	public Country getCurrentCountry()
+	{
+		return currentCountry;
 	}
 
 	public JSONAware toJSON()
