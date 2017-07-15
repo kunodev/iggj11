@@ -1,5 +1,6 @@
 package Actions;
 
+import Entity.Country;
 import State.ServerState;
 
 import java.util.Map;
@@ -10,6 +11,12 @@ public class ActionChoseCountry extends AbstractAction
 	public void execute(Map<String, AbstractAction> actions, ServerState state, Map<String, Object> params)
 	{
 		// todo only do this every X turns
-		state.setCurrentCountry(state.getRandomCountry(state.getCurrentCountry().getCountryCode()));
+		String  excludeCountry = "";
+		Country currentCountry = state.getCurrentCountry();
+		if (currentCountry != null) {
+			excludeCountry = currentCountry.getCountryCode();
+		}
+
+		state.setCurrentCountry(state.getRandomCountry(excludeCountry));
 	}
 }

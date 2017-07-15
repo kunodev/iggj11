@@ -20,6 +20,8 @@ public class ActionSetQuestion extends AbstractAction
 	{
 		Timeout.setTimeout(() ->
 		{
+			actions.get(AbstractAction.ACTION_CHOSE_COUNTRY).execute(actions, state, params);
+
 			Question question = questionLoader.getQuestionForCountry(state.getCurrentCountry().getCountryCode());
 			if(question == null){
 				state.setQuestion("Keine Frage gefunden", ""); //todo Was dann?

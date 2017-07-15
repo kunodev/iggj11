@@ -126,7 +126,7 @@ public class ServerState implements JSONSerializable
 
 	public Country getCurrentCountry()
 	{
-		return currentCountry;
+		return this.currentCountry;
 	}
 
 	public JSONAware toJSON()

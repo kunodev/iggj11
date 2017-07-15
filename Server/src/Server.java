@@ -43,6 +43,7 @@ public class Server
 			this.actions.put(AbstractAction.ACTION_ANSWER_CHECK, new ActionAnswerCheck());
 			this.actions.put(AbstractAction.ACTION_ANSWER_CHECK_SUBMIT, new ActionAnswerCheckSubmit());
 			this.actions.put(AbstractAction.ACTION_SET_QUESTION, new ActionSetQuestion());
+			this.actions.put(AbstractAction.ACTION_CHOSE_COUNTRY, new ActionChoseCountry());
 
 			state.addCountry(new Country("fr", "Frankreich"));
 			state.addCountry(new Country("tr", "Türkei"));
