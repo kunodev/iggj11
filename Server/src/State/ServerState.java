@@ -19,10 +19,6 @@ public class ServerState implements JSONSerializable
 	public static final String STATE_QUESTION    = "question";
 	public static final String STATE_ANSER_CHECK = "answerCheck";
 
-	public static final String STATE_ANSWER_STATE_UNKNOWN   = "unknown";
-	public static final String STATE_ANSWER_STATE_CORRECT   = "correct";
-	public static final String STATE_ANSWER_STATE_INCORRECT = "incorrect";
-
 	public static final int POINTS_CORRECT_ANSWER = 2;
 	public static final int POINTS_CORRECT_REPEAT = 1;
 	public static final int POINTS_CONQUER_COUNTRY = 1;
