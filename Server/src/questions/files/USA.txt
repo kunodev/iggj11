@@ -1,7 +1,7 @@
 "us","g","","Wie heisst die Hauptstadt der USA?","Washington"
 "us","g","","Wofür steht das D.C. hinter Washington?","District of Columbia"
 "us","g","s","Wieviele Bundesstaaten hat die USA?","50" 
-"us","g","","Welche Stadt der USA ist als einzige nicht per Highway zu erreichen?","Anchorage"
+"us","g","","Welche Stadt der USA ist als einzige nicht per Highway zu erreichen?","Anchorage,Alaska"
 "us","g","","Wie heisst die berühmteste Straße der USA?","Route 66"
 "us","g","","Wie heisst der Fluss, der acht Bundesstaaten von Norden nach Süden durchquert?","Mississippi"
 "us","g","","welchen Bundesstaat nennt man auch Sunshine State?","Kalifornien"
@@ -21,3 +21,5 @@
 "us","p","","Welcher Staat hat vor kurzem darüber abgestimmt, der 51. Staat der USA zu werden?","Puerto Rico"
 "us","P","","Welches Land ist laut Trump Bad, very BAD?","Deutschland"
 "us","c","s","Wieviele Einwohner hat die USA?","323 mio"
+"us","c","","Was ist ein intelligenter Mensch in den USA?","Tourist"
+

@@ -43,13 +43,16 @@ public class ServerState implements JSONSerializable
 	private Map<String, Integer> totalCountryRounds = new HashMap<String, Integer>();
 
     private QuestionLoader questionLoader = new QuestionLoader(new String[]{
+            "questions/files/Deutschland.txt",
             "questions/files/Egypt.txt",
             "questions/files/France.txt",
+            "questions/files/Italy.txt",
+            "questions/files/japan.txt",
+//            "questions/files/master.txt",
+            "questions/files/Oz.txt",
             "questions/files/russia.txt",
-            "questions/files/USA.txt",
-			"questions/files/australia.txt",
-			"questions/files/japan.txt",
-			"questions/files/Deutschland.txt"});
+            "questions/files/Suedamerika.txt",
+            "questions/files/USA.txt"});
 
 //    private QuestionLoader questionLoader = new QuestionLoader(new String[]{
 //            "questions/Beispiel.csv"}); //zum Testen mit Beispiel :) :)
