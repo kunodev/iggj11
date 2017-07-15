@@ -161,7 +161,8 @@ public class ServerState implements JSONSerializable
 	{
 		if(currentCountry != null) {
 			//Increment passed rounds
-			int amountRoundsPassed = this.totalCountryRounds.get(this.currentCountry.getCountryCode());
+
+			int amountRoundsPassed = this.getTotalRoundsInCountry(currentCountry);
 			this.totalCountryRounds.put(this.currentCountry.getCountryCode(), amountRoundsPassed +1);
 		}
 		this.currentCountry = country;
