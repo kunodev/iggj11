@@ -10,10 +10,12 @@ import java.util.List;
 public class Question {
 
     public String question;
+    public String category;
     public List<String> answers;
 
-    public Question(String question, List<String> answers) {
+    public Question(String category, String question, List<String> answers) {
         this.question = question;
+        this.category = category;
         this.answers = answers;
     }
 

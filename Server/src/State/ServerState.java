@@ -8,6 +8,7 @@ import JSONUtil.JSONSerializable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
+import questions.Question;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -32,8 +33,9 @@ public class ServerState implements JSONSerializable
 	private JSONArrayList<User> users = new JSONArrayList<>();
 
 	private JSONHashMap<String, Integer> countryOwners = new JSONHashMap<>();
-	private String currentQuestion;
-	private String currentAnswer;
+//	private String currentQuestion;
+//	private String currentAnswer;
+	private Question currentQuestionObject;
 	private JSONHashMap<Integer, String> givenAnswers = new JSONHashMap<>();
 	private JSONHashMap<Integer, String> answerStates = new JSONHashMap<>();
 	private ArrayList<Country> countries = new ArrayList<>();
@@ -49,10 +51,9 @@ public class ServerState implements JSONSerializable
 		this.state = state;
 	}
 
-	public void setQuestion(String question, String answer)
+	public void setQuestion(Question question)
 	{
-		this.currentQuestion = question;
-		this.currentAnswer = answer;
+		this.currentQuestionObject = question;
 	}
 
 	public void addAnswer(int userId, String answer)
@@ -77,6 +78,7 @@ public class ServerState implements JSONSerializable
 			if (answerState.equals(STATE_ANSWER_STATE_CORRECT))
 			{
 				this.getUser(userId).addPoints(POINTS_CORRECT_ANSWER);
+				this.getUser(userId).addCorrectAnsweredQuestion(currentQuestionObject);
 			}
 		}
 	}
@@ -150,11 +152,11 @@ public class ServerState implements JSONSerializable
 				break;
 
 			case STATE_QUESTION:
-				stateData.put("question", currentQuestion);
+				stateData.put("question", currentQuestionObject.question);
 				break;
 
 			case STATE_ANSER_CHECK:
-				stateData.put("realAnswer", currentAnswer);
+				stateData.put("realAnswer", currentQuestionObject.answers.get(0));	//todo mehrere Antworten ermöglichen?
 				stateData.put("answers", givenAnswers.toJSON());
 				stateData.put("answerStates", answerStates.toJSON());
 				break;

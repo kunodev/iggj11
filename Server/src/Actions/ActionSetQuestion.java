@@ -5,6 +5,7 @@ import State.ServerState;
 import questions.Question;
 import questions.QuestionLoader;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ActionSetQuestion extends AbstractAction
@@ -24,9 +25,9 @@ public class ActionSetQuestion extends AbstractAction
 
 			Question question = questionLoader.getQuestionForCountry(state.getCurrentCountry().getCountryCode());
 			if(question == null){
-				state.setQuestion("Keine Frage gefunden", ""); //todo Was dann?
+				state.setQuestion(new Question("","Keine Frage gefunden", new ArrayList<>())); //todo Was dann?
 			}else {
-				state.setQuestion(question.question, question.answers.get(0)); //todo ggf. für mehrere Antworten optimieren :)
+				state.setQuestion(question);
 			}
 			state.setState(ServerState.STATE_QUESTION);
 		}, 5000);
