@@ -8,6 +8,7 @@ import JSONUtil.JSONSerializable;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import questions.Question;
+import questions.QuestionLoader;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -24,7 +25,10 @@ public class ServerState implements JSONSerializable
 	public static final String STATE_ANSWER_STATE_CORRECT   = "correct";
 	public static final String STATE_ANSWER_STATE_INCORRECT = "incorrect";
 
-	public static final int POINTS_CORRECT_ANSWER = 1;
+	public static final int POINTS_CORRECT_ANSWER = 2;
+	public static final int POINTS_CORRECT_REPEAT = 1;
+	public static final int POINTS_CONQUER_COUNTRY = 1;
+	public static final int ROUNDS_PER_COUNTRY = 3;
 
 	private int maxUserId = 0;
 
@@ -39,6 +43,19 @@ public class ServerState implements JSONSerializable
 //	private String currentQuestion;
 //	private String currentAnswer;
 	private Country currentCountry;
+
+    private QuestionLoader questionLoader = new QuestionLoader(new String[]{
+            "questions/files/Egypt.txt",
+            "questions/files/France.txt",
+            "questions/files/russia.txt"});
+
+
+
+    public QuestionLoader getQuestionLoader(){
+        return questionLoader;
+    }
+
+	private int currentRound = 0;
 
 	public void addUser(User user)
 	{
@@ -67,6 +84,7 @@ public class ServerState implements JSONSerializable
 
 	public void rewardCorrectAnswers()
 	{
+
 		for (Object o : answerStates.entrySet())
 		{
 			Map.Entry pair = (Map.Entry) o;
@@ -76,10 +94,18 @@ public class ServerState implements JSONSerializable
 
 			if (answerState.equals(STATE_ANSWER_STATE_CORRECT))
 			{
-				this.getUser(userId).addPoints(POINTS_CORRECT_ANSWER);
+
+			    if(questionLoader.isRepeatedQuestion(currentQuestionObject, currentCountry.getCountryCode())){
+                    this.getUser(userId).addPoints(POINTS_CORRECT_REPEAT);
+                }else{
+                    this.getUser(userId).addPoints(POINTS_CORRECT_ANSWER);
+                }
+
 				this.getUser(userId).addCorrectAnsweredQuestion(currentQuestionObject);
 			}
 		}
+
+        questionLoader.addRepeatQuestion(currentQuestionObject, currentCountry.getCountryCode());
 	}
 
 	public void resetAnswers()
@@ -175,4 +201,49 @@ public class ServerState implements JSONSerializable
 
 		return null;
 	}
+
+	public int getCurrentRound (){
+	    return currentRound;
+    }
+
+    public void increaseCurrentRound(){
+	    currentRound++;
+    }
+
+    public void setCurrentRound(int i){
+        currentRound = i;
+    }
+
+    /**
+     * Auswertung nach X Runden im Land und Umverteilung des Landes
+     */
+    public void evaluateCountry(){
+
+        int highestScore = 0;
+        User winner = null;
+
+        for(User u : users){
+            //Todo Gleichstände beachten
+            if(u.getPoints() > highestScore){
+                winner = u;
+                highestScore = u.getPoints();
+            }
+        }
+
+        //Todo Gleichstände beachten
+        if(highestScore> currentCountry.getHighscore()){
+            if(winner != null){
+                winner.addPoints(POINTS_CONQUER_COUNTRY);   //Bonuspunkte für Übernahme des Landes
+                countryOwners.put(currentCountry.getCountryCode(),  winner.getId());
+            }
+        }
+
+        //todo irgendwie mitteilen wer das aktuelle Land jetzt übernommen hat + die Punktzahl
+
+        for(User u : users){
+            u.resetPoints();
+        }
+
+    }
+
 }

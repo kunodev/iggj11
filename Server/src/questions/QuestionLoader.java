@@ -8,19 +8,22 @@ import java.util.*;
  */
 public class QuestionLoader {
 
-    Map<String, List<Question>> questionsPerLand;
+    Map<String, List<Question>> questionsPerCountry;
+    Map<String, List<Question>> alreadyAskedQuestions;
     private String[] csvfiles;
 
 
     public QuestionLoader(String[] csvFilePaths) {
 
         this.csvfiles = csvFilePaths;
+        alreadyAskedQuestions = new HashMap<String, List<Question>>();
+        questionsPerCountry = new HashMap<String, List<Question>>();
         loadQuestions(csvFilePaths);
     }
 
 
     public Map<String, List<Question>> getQuestionMap(){
-        return questionsPerLand;
+        return questionsPerCountry;
     }
 
 
@@ -33,11 +36,44 @@ public class QuestionLoader {
      */
     public Question getQuestionForCountry(String country){
 
-        if(questionsPerLand.containsKey(country)){
-            return giveRandomQuestion(questionsPerLand.get(country));
+        if(questionsPerCountry.containsKey(country)){
+            return giveRandomQuestion(questionsPerCountry.get(country), true);
         }
 
         return null;
+    }
+
+
+    public void addRepeatQuestion(Question question, String country){
+
+        if(alreadyAskedQuestions.containsKey(country)){
+            alreadyAskedQuestions.get(country).add(question);
+        }else{
+            alreadyAskedQuestions.put(country, new ArrayList<Question>());
+            alreadyAskedQuestions.get(country).add(question);
+        }
+
+    }
+
+
+    public Question getRepeatedQuestion(String country){
+
+        if(alreadyAskedQuestions.containsKey(country)){
+
+            return giveRandomQuestion(alreadyAskedQuestions.get(country), false);
+
+        }else{
+            if(questionsPerCountry.containsKey(country)){
+
+                return giveRandomQuestion(questionsPerCountry.get(country), true);
+
+            }else{
+
+                return null;
+
+            }
+        }
+
     }
 
 
@@ -49,12 +85,22 @@ public class QuestionLoader {
     }
 
 
+    public boolean isRepeatedQuestion(Question question, String country){
+
+        if(alreadyAskedQuestions.containsKey(country) && alreadyAskedQuestions.get(country).contains(question)){
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+
     //-----------------
 
     //CSV-Aufbau: Land, Kategorie, Frage, Antworten..
     private void loadQuestions(String[] csvFilePaths){
-
-        questionsPerLand = new HashMap<String, List<Question>>();
 
         for(String s : csvFilePaths){
 
@@ -77,8 +123,8 @@ public class QuestionLoader {
                     }
 
                     if(entries.length>=3){
-                        if(!questionsPerLand.containsKey(entries[0])){
-                            questionsPerLand.put(entries[0], new ArrayList<Question>());
+                        if(!questionsPerCountry.containsKey(entries[0])){
+                            questionsPerCountry.put(entries[0], new ArrayList<Question>());
                         }
 
                         List<String> answers = new ArrayList<>();
@@ -87,7 +133,7 @@ public class QuestionLoader {
                             answers.add(entries[i]);
                         }
 
-                        questionsPerLand.get(entries[0]).add(new Question(entries [1], entries[2], answers));
+                        questionsPerCountry.get(entries[0]).add(new Question(entries [1], entries[2], answers));
                     }
                 }
 
@@ -98,13 +144,24 @@ public class QuestionLoader {
     }
 
 
-    private Question giveRandomQuestion (List<Question> questions){
+    private Question giveRandomQuestion (List<Question> questions, boolean remove){
 
         Random random = new Random();
-        switch (questions.size()){
-            case 0: return null;
-            case 1: return questions.remove(0);
-            default: return questions.remove(random.nextInt(questions.size()-1));
+        if(remove){
+            switch (questions.size()){
+                case 0: return null;
+                case 1: return questions.remove(0);
+                default: return questions.remove(random.nextInt(questions.size()-1));
+            }
+        }else{
+            switch (questions.size()){
+                case 0: return null;
+                case 1: return questions.get(0);
+                default: return questions.get(random.nextInt(questions.size()-1));
+            }
         }
+
     }
+
+
 }
