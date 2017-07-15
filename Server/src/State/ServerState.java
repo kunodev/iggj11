@@ -192,6 +192,7 @@ public class ServerState implements JSONSerializable
 				break;
 
 			case STATE_ANSER_CHECK:
+				stateData.put("question", currentQuestionObject.question);
 				stateData.put("realAnswer", currentQuestionObject.answers.get(0));	//todo mehrere Antworten ermöglichen?
 				stateData.put("answers", givenAnswers.toJSON());
 				stateData.put("answerStates", answerStates.toJSON());
