@@ -76,7 +76,7 @@ public class Server
 		private void sendResponse(HttpExchange exch, String response) throws IOException
 		{
 			exch.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
-			exch.sendResponseHeaders(200, response.length());
+			exch.sendResponseHeaders(200, response.getBytes().length);
 			OutputStream os = exch.getResponseBody();
 			os.write(response.getBytes());
 			os.close();
