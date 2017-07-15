@@ -8,10 +8,12 @@ public class Country implements JSONSerializable
 {
 	private String countryCode;
 	private String name;
+	private int highscore;
 
 	public Country (String countryCode, String name) {
 		this.countryCode = countryCode;
 		this.name = name;
+		highscore = 0;
 	}
 
 	public String getCountryCode() {
@@ -25,5 +27,9 @@ public class Country implements JSONSerializable
 		obj.put("countryCode", countryCode);
 		obj.put("name", name);
 		return obj;
+	}
+
+	public int getHighscore(){
+		return highscore;
 	}
 }

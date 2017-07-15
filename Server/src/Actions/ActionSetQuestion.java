@@ -5,17 +5,15 @@ import State.ServerState;
 import questions.Question;
 import questions.QuestionLoader;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ActionSetQuestion extends AbstractAction
 {
-	private QuestionLoader questionLoader;
 
 	public ActionSetQuestion() {
-		questionLoader = new QuestionLoader(new String[]{"questions/files/Egypt.txt",
-                "questions/files/France.txt",
-                "questions/files/russia.txt"});
 	}
 
 	@Override
@@ -23,14 +21,37 @@ public class ActionSetQuestion extends AbstractAction
 	{
 		Timeout.setTimeout(() ->
 		{
-			actions.get(AbstractAction.ACTION_CHOSE_COUNTRY).execute(actions, state, params);
 
-			Question question = questionLoader.getQuestionForCountry(state.getCurrentCountry().getCountryCode());
+		    state.increaseCurrentRound();
+		    if(state.getCurrentRound() > ServerState.ROUNDS_PER_COUNTRY) {
+
+
+		        state.evaluateCountry();
+
+                //todo hier den Endstand des Landes irgendwie anzeigen....?
+
+                state.setCurrentRound(0);
+
+		        //ActionEvaluateCountry ----> ActionStart
+
+                actions.get(AbstractAction.ACTION_CHOSE_COUNTRY).execute(actions, state, params);
+            }
+
+            Question question = null;
+            if(state.getCurrentRound() == ServerState.ROUNDS_PER_COUNTRY){
+		        question = state.getQuestionLoader().getRepeatedQuestion(state.getCurrentCountry().getCountryCode());
+            }else {
+                question = state.getQuestionLoader().getQuestionForCountry(state.getCurrentCountry().getCountryCode());
+            }
+
 			if(question == null){
-				state.setQuestion(new Question("","Keine Frage gefunden", new ArrayList<>())); //todo Was dann?
+                List<String> temp = new ArrayList<String>();
+                temp.add("");
+				state.setQuestion(new Question("","Keine Frage gefunden", temp)); //todo Was dann?
 			}else {
 				state.setQuestion(question);
 			}
+
 			state.setState(ServerState.STATE_QUESTION);
 		}, 5000);
 	}

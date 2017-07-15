@@ -21,6 +21,7 @@ public class User implements JSONSerializable
 	private String role;
 	private String color;
     private List<Question> correctAnsweredQuestions;
+    private int totalPoints;
 
 	public User(int id, String userName)
 	{
@@ -56,5 +57,17 @@ public class User implements JSONSerializable
 	public int getId()
 	{
 		return id;
+	}
+
+	public int getPoints(){
+		return points;
+	}
+
+	/**
+	 * Setzt die aktuellen Punkte zurück und addiert sie vorher zur Gesamtpunktzahl
+	 */
+	public void resetPoints(){
+		totalPoints+=points;
+		points = 0;
 	}
 }

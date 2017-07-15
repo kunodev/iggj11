@@ -13,6 +13,7 @@ public abstract class AbstractAction
 	public static final String ACTION_ANSWER_CHECK_SUBMIT = "answerchecksubmit";
 	public static final String ACTION_SET_QUESTION        = "setquestion";
 	public static final String ACTION_CHOSE_COUNTRY       = "chosecountry";
+	public static final String ACTION_EVALUATE_COUNTRY	  = "evaulatecountry";
 
 	public abstract void execute(Map<String, AbstractAction> actions, ServerState state, Map<String, Object> params);
 
