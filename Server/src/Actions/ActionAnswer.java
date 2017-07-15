@@ -16,7 +16,8 @@ public class ActionAnswer extends AbstractAction
 
 		if (state.didAllPlayersAnswer())
 		{
-			state.setState(ServerState.STATE_ANSER_CHECK);
+			state.setQuestionTimeout(0);
+			state.setState(ServerState.STATE_ANSWER_CHECK);
 		}
 	}
 }

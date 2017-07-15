@@ -28,14 +28,19 @@ public class ServerState implements JSONSerializable
 	public QuestionClientInfo questionJSON = new QuestionClientInfo();
 	private FlowHandler flow = new FlowHandler();
 
+	private long questionTimeout = 0;
+
     private QuestionLoader questionLoader = new QuestionLoader(new String[]{
+            "questions/files/Deutschland.txt",
             "questions/files/Egypt.txt",
             "questions/files/France.txt",
+            "questions/files/Italy.txt",
+            "questions/files/japan.txt",
+//            "questions/files/master.txt",
+            "questions/files/Oz.txt",
             "questions/files/russia.txt",
-            "questions/files/USA.txt",
-			"questions/files/australia.txt",
-			"questions/files/japan.txt",
-			"questions/files/Deutschland.txt"});
+            "questions/files/Suedamerika.txt",
+            "questions/files/USA.txt"});
 
 //    private QuestionLoader questionLoader = new QuestionLoader(new String[]{
 //            "questions/Beispiel.csv"}); //zum Testen mit Beispiel :) :)
@@ -52,6 +57,11 @@ public class ServerState implements JSONSerializable
 	public void setQuestion(Question question)
 	{
 		this.currentQuestionObject = question;
+		this.setQuestionTimeout(getTime() + QUESTION_TIMEOUT_SEK);
+	}
+
+	public void setQuestionTimeout(long timeout) {
+		this.questionTimeout = timeout;
 	}
 
 	public void InitSession() {
@@ -109,6 +119,7 @@ public class ServerState implements JSONSerializable
                 stateData.put("currentCountry", flow.getCurrentCountry().getCountryCode());
 				stateData.put("question", currentQuestionObject.question);
 				stateData.put("finishedUsers", questionJSON.finishedIds.toJSON());
+				stateData.put("questionTimeout", this.questionTimeout);
 				break;
 
 			case STATE_ANSER_CHECK:
@@ -145,5 +156,19 @@ public class ServerState implements JSONSerializable
 
 	private void rollSimpleQuestions()  {
 		currentQuestionObject = getQuestionLoader().getQuestionForCountry(flow.getCurrentCountry().getCountryCode());
+	}
+
+	private long getTime() {
+		return (new Date()).getTime() / 1000;
+	}
+
+	public String getState()
+	{
+		return state;
+	}
+
+	public long getQuestionExpireTime()
+	{
+		return questionTimeout;
 	}
 }
