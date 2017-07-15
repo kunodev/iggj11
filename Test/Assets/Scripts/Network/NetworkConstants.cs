@@ -12,13 +12,16 @@ public class NetworkConstants
     public const string STATE_WORLD = "world";
     public const string STATE_QUESTION = "question";
     public const string STATE_ANSWERCHECK = "answerCheck";
-
+    public const string STATE_COUNTRIES = "countries";
+    
     public const string PARAM_USERS = "users";
     public const string PARAM_USER_ID = "user_id";
     public const string PARAM_ANSWER = "answer";
     public const string PARAM_ANSWER_STATE = "answer_state";
     public const string PARAM_COLOR = "color";
     public const string PARAM_NAME = "name";
+    
+    
     
     public const string ACTION                     = "action";
     public const string ACTION_LOGIN               = "login";
@@ -39,5 +42,8 @@ public class NetworkConstants
     public const string USER_ROLE = "role";
 
     public const string ROLE_MASTER = "gameMaster";
+
+    public const string COUNTRY_CODE = "countryCode";
+    public const string COUNTRY_NAME = "name";
 
 }

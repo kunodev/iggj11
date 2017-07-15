@@ -24,5 +24,13 @@ namespace Network
         {
             this._state = state;
         }
+
+        public List<JSONObject> Countries
+        {
+            get
+            {
+                return this._state[""]
+            }
+        }
     }
 }
