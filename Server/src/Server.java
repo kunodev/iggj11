@@ -46,9 +46,10 @@ public class Server
 			this.actions.put(AbstractAction.ACTION_CHOSE_COUNTRY, new ActionChoseCountry());
 
 //			state.addCountry(new Country("br", "Brasilien"));
-//			state.addCountry(new Country("jp", "Japan"));
+			state.addCountry(new Country("jp", "Japan"));
 //			state.addCountry(new Country("tr", "Türkei"));
-//			state.addCountry(new Country("de", "Deutschland"));
+			state.addCountry(new Country("oz", "Australien"));
+			state.addCountry(new Country("de", "Deutschland"));
 			state.addCountry(new Country("fr", "Frankreich"));
 			state.addCountry(new Country("ru", "Russland"));
 			state.addCountry(new Country("eg", "Ägypten"));
