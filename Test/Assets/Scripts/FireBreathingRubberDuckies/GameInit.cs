@@ -1,4 +1,5 @@
-﻿using Structure;
+﻿using Network;
+using Structure;
 using UnityEngine;
 
 namespace FireBreathingRubberDuckies
@@ -11,6 +12,9 @@ namespace FireBreathingRubberDuckies
         {
             Service.Set(this.gameObject.AddComponent<CoroutineManager>());
             Service.Set(UiSystem);
+            Service.Set(new UserData());
+            Service.Set(new RequestHandler());
+            Service.Set(new StatePollingHandler());
         }
     }
 }
