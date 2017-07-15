@@ -1,8 +1,13 @@
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
+import Actions.*;
+import Entity.Country;
 import ServerUtil.ParameterFilter;
+import State.ServerState;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -10,12 +15,6 @@ import com.sun.net.httpserver.HttpServer;
 
 public class Server
 {
-	public static final String ACTION_LOGIN               = "login";
-	public static final String ACTION_START               = "startgame";
-	public static final String ACTION_ANSWER              = "answer";
-	public static final String ACTION_ANSWER_CHECK        = "answercheck";
-	public static final String ACTION_ANSWER_CHECK_SUBMIT = "answerchecksubmit";
-
 	public static void main(String[] args) throws IOException
 	{
 		new Server();
@@ -31,74 +30,43 @@ public class Server
 
 	private class RequestHandler implements HttpHandler
 	{
-		private ServerState state;
+		private ServerState                 state;
+		private Map<String, AbstractAction> actions;
 
 		RequestHandler(ServerState state)
 		{
 			this.state = state;
+			this.actions = new HashMap<>();
+			this.actions.put(AbstractAction.ACTION_LOGIN, new ActionLogin());
+			this.actions.put(AbstractAction.ACTION_START, new ActionStart());
+			this.actions.put(AbstractAction.ACTION_ANSWER, new ActionAnswer());
+			this.actions.put(AbstractAction.ACTION_ANSWER_CHECK, new ActionAnswerCheck());
+			this.actions.put(AbstractAction.ACTION_ANSWER_CHECK_SUBMIT, new ActionAnswerCheckSubmit());
+			this.actions.put(AbstractAction.ACTION_SET_QUESTION, new ActionSetQuestion());
+
+			state.addCountry(new Country("fr", "Frankreich"));
+			state.addCountry(new Country("tr", "Türkei"));
+			state.addCountry(new Country("ru", "Russland"));
+			state.addCountry(new Country("de", "Deutschland"));
+			state.addCountry(new Country("jp", "Japan"));
+			state.addCountry(new Country("eg", "Ägypten"));
+			state.addCountry(new Country("br", "Brasilien"));
+			state.addCountry(new Country("us", "USA"));
 		}
 
 		@Override
 		public void handle(HttpExchange exch) throws IOException
 		{
-			// todo: action handling in eigene Klasse
 			if ("post".equalsIgnoreCase(exch.getRequestMethod()))
 			{
 				Map<String, Object> params = (Map<String, Object>) exch.getAttribute("parameters");
-				String              action = (String) params.get("action");
+				String              requestedAction = (String) params.get("action");
 
-				int userId;
-				switch (action)
-				{
-					case ACTION_LOGIN:
-						state.addUser(new User(state.generateUserId(), (String) params.get("name")));
-						break;
-
-					case ACTION_START:
-						state.setState(ServerState.STATE_WORLD);
-
-						// todo: Timeouts in eigene Methode verschieben
-						setTimeout(() ->
-						{
-							// todo: Frage aus GameDesign Daten generieren
-							state.setQuestion("Warum macht deine Mudda Passfotos bei GoogleEarth?", "Weil sie ein Weltling ist!");
-							state.setState(ServerState.STATE_QUESTION);
-						}, 5000);
-						break;
-
-					case ACTION_ANSWER:
-						userId = Integer.parseInt((String) params.get("user_id"));
-						String answer = (String) params.get("answer");
-
-						state.addAnswer(userId, answer);
-
-						if (state.didAllPlayersAnswer())
-						{
-							state.setState(ServerState.STATE_ANSER_CHECK);
-						}
-
-						break;
-
-					case ACTION_ANSWER_CHECK:
-						userId = Integer.parseInt((String) params.get("user_id"));
-						String answerState = (String) params.get("answer_state");
-						state.setAnswerState(userId, answerState);
-
-						break;
-
-					case ACTION_ANSWER_CHECK_SUBMIT:
-						state.rewardCorrectAnswers();
-						state.resetAnswers();
-						state.setState(ServerState.STATE_WORLD);
-
-						// todo: Timeout Methode wiederverwenden
-						setTimeout(() ->
-						{
-							state.setQuestion("PT. II: Warum macht deine Mudda Passfotos bei GoogleEarth", "Weil sie ein Weltling ist!");
-							state.setState(ServerState.STATE_QUESTION);
-						}, 5000);
-						break;
+				AbstractAction action = this.actions.get(requestedAction);
+				if (action != null) {
+					action.execute(this.actions, state, params);
 				}
+
 			}
 
 			sendResponse(exch, state.toJSON().toString());
@@ -114,19 +82,4 @@ public class Server
 		}
 	}
 
-	public static void setTimeout(Runnable runnable, int delay)
-	{
-		new Thread(() ->
-		{
-			try
-			{
-				Thread.sleep(delay);
-				runnable.run();
-			}
-			catch (Exception e)
-			{
-				System.err.println(e);
-			}
-		}).start();
-	}
 }

@@ -1,3 +1,7 @@
+package State;
+
+import Entity.Country;
+import Entity.User;
 import JSONUtil.JSONArrayList;
 import JSONUtil.JSONHashMap;
 import JSONUtil.JSONSerializable;
@@ -5,7 +9,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 public class ServerState implements JSONSerializable
 {
@@ -30,6 +36,7 @@ public class ServerState implements JSONSerializable
 	private String currentAnswer;
 	private JSONHashMap<Integer, String> givenAnswers = new JSONHashMap<>();
 	private JSONHashMap<Integer, String> answerStates = new JSONHashMap<>();
+	private ArrayList<Country> countries;
 
 	public void addUser(User user)
 	{
@@ -87,6 +94,24 @@ public class ServerState implements JSONSerializable
 	public boolean didAllPlayersAnswer()
 	{
 		return this.givenAnswers.keySet().size() == this.users.size();
+	}
+
+	public void addCountry(Country c) {
+		this.countries.add(c);
+	}
+
+	public Country getRandomCountry(String excludedCountry) {
+		ArrayList<Country> validCountries = new ArrayList<>();
+		for (Country c : this.countries) {
+			if (c.getCountryCode().equals(excludedCountry)) {
+				continue;
+			}
+
+			validCountries.add(c);
+		}
+
+		int index = (new Random()).nextInt(validCountries.size());
+		return validCountries.get(index);
 	}
 
 	public JSONAware toJSON()

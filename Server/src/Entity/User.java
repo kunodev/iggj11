@@ -1,3 +1,5 @@
+package Entity;
+
 import JSONUtil.JSONSerializable;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
@@ -12,7 +14,7 @@ public class User implements JSONSerializable
 	private int    points;
 	private String role;
 
-	User(int id, String userName)
+	public User(int id, String userName)
 	{
 		this.id = id;
 		this.userName = userName;
