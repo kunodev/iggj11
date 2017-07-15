@@ -10,6 +10,6 @@ public class ActionLogin extends AbstractAction
 	@Override
 	public void execute(Map<String, AbstractAction> actions, ServerState state, Map<String, Object> params)
 	{
-		state.addUser(new User(state.generateUserId(), (String) params.get("name")));
+		state.sessionJSON.addUser(new User(state.sessionJSON.generateUserId(), (String) params.get("name")));
 	}
 }

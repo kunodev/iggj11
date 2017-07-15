@@ -14,7 +14,7 @@ Deutschland
 "de","h","","Von wann bis wann bestand das Deutsche Kaiserreich?","1871-1918"
 "de","h","","Aus welchem Jahr ist die Verfassung der Bundesrepublik Deutschland?","1949"
 "de","h","","Wer komponierte die neunte Symphonie?","BeAthoven"
-"de","c","","In welcher deutschen Stadt steht die Porta Nigra??,"Trier"
+"de","c","","In welcher deutschen Stadt steht die Porta Nigra??","Trier"
 "de","h","","In welchem Jahr wurde Berlin geteilt?","1961"
 "de","p","","Wofür stand die Alternative für Deutschland ursprünglich?","Austritt aus dem Euro"
 "de","p","","Bei Olympia sagte Olaf scholz, man müsse bei einem Großereignis die Stadtbevölkerung fragen. Wen fragte er vor dem G20-Gipfel?","Niemand."
