@@ -5,7 +5,6 @@ import Entity.User;
 import JSONUtil.JSONArrayList;
 import JSONUtil.JSONHashMap;
 import JSONUtil.JSONSerializable;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 
@@ -28,16 +27,16 @@ public class ServerState implements JSONSerializable
 
 	private int maxUserId = 0;
 
-	private String              state = STATE_LOBBY;
-	private JSONArrayList<User> users = new JSONArrayList<>();
+	private String                 state     = STATE_LOBBY;
+	private JSONArrayList<User>    users     = new JSONArrayList<>();
+	private JSONArrayList<Country> countries = new JSONArrayList<>();
 
 	private JSONHashMap<String, Integer> countryOwners = new JSONHashMap<>();
-	private String currentQuestion;
-	private String currentAnswer;
 	private JSONHashMap<Integer, String> givenAnswers = new JSONHashMap<>();
 	private JSONHashMap<Integer, String> answerStates = new JSONHashMap<>();
-	private ArrayList<Country> countries = new ArrayList<>();
-	private Country            currentCountry;
+	private String currentQuestion;
+	private String currentAnswer;
+	private Country currentCountry;
 
 	public void addUser(User user)
 	{
@@ -133,12 +132,8 @@ public class ServerState implements JSONSerializable
 	{
 		JSONObject obj = new JSONObject();
 
-		JSONArray userList = new JSONArray();
-		for (User user : users)
-		{
-			userList.add(user.toJSON());
-		}
-		obj.put("users", userList);
+		obj.put("users", users.toJSON());
+		obj.put("countries", countries.toJSON());
 		obj.put("state", state);
 
 		JSONObject stateData = new JSONObject();
@@ -150,6 +145,7 @@ public class ServerState implements JSONSerializable
 				break;
 
 			case STATE_QUESTION:
+				stateData.put("currentCountry", currentCountry.getCountryCode());
 				stateData.put("question", currentQuestion);
 				break;
 

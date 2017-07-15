@@ -13,7 +13,12 @@ public class JSONArrayList<E> extends ArrayList<E> implements JSONSerializable
 		JSONArray obj = new JSONArray();
 		for (E value : this)
 		{
-			obj.add(value);
+			if (value instanceof JSONSerializable)
+			{
+				obj.add(((JSONSerializable) value).toJSON());
+			} else {
+				obj.add(value);
+			}
 		}
 
 		return obj;
