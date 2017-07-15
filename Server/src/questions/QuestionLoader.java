@@ -99,7 +99,7 @@ public class QuestionLoader {
 
     //-----------------
 
-    //CSV-Aufbau: Land, Kategorie, Frage, Antworten..
+    //CSV-Aufbau: Land, Kategorie, Schätz, Frage, Antworten..
     private void loadQuestions(String[] csvFilePaths){
 
         for(String s : csvFilePaths){
@@ -109,7 +109,7 @@ public class QuestionLoader {
             }
 
             String line = "";
-            String cvsSplitBy = ",";
+            String cvsSplitBy = "\",\"";
 
             InputStream is =ClassLoader.getSystemResourceAsStream(s);
             try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
@@ -122,18 +122,18 @@ public class QuestionLoader {
                         entries[i] = entries[i].replaceAll("\"", "");
                     }
 
-                    if(entries.length>=3){
+                    if(entries.length>=4){
                         if(!questionsPerCountry.containsKey(entries[0])){
                             questionsPerCountry.put(entries[0], new ArrayList<Question>());
                         }
 
                         List<String> answers = new ArrayList<>();
 
-                        for(int i=3; i<entries.length;i++){
+                        for(int i=4; i<entries.length;i++){
                             answers.add(entries[i]);
                         }
 
-                        questionsPerCountry.get(entries[0]).add(new Question(entries [1], entries[2], answers));
+                        questionsPerCountry.get(entries[0]).add(new Question(entries [1], entries[3], answers));
                     }
                 }
 
