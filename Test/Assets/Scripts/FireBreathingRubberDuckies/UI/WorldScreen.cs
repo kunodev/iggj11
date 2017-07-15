@@ -33,7 +33,15 @@ namespace FireBreathingRubberDuckies.UI
 
         public void UpdateState(GameState gs)
         {
-            
+            if (!Inited)
+            {
+                Init(gs);
+            }
+            foreach (string country in gs.CountryOwners.keys)
+            {
+                int id = (int) gs.CountryOwners[country].i;
+                Color c = gs.GetColorOfId(id);
+            }
         }
     }
 }

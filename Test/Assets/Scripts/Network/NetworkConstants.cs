@@ -13,6 +13,7 @@ public class NetworkConstants
     public const string STATE_QUESTION = "question";
     public const string STATE_ANSWERCHECK = "answerCheck";
     public const string STATE_COUNTRIES = "countries";
+    public const string STATE_DATA = "stateData";
     
     public const string PARAM_USERS = "users";
     public const string PARAM_USER_ID = "user_id";

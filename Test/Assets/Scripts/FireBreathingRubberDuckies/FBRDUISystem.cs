@@ -35,7 +35,9 @@ namespace FireBreathingRubberDuckies
                 case NetworkConstants.GAMESTATE_LOBBY : 
                     this.LobbyScreen.GetComponent<LobbyScreen>().CheckState(obj);
                     break;
-                    
+                case NetworkConstants.GAMESTATE_WORLD :
+                    this.WorldScreen.GetComponent<WorldScreen>().UpdateState(obj);
+                    break;
             }
         }
     }

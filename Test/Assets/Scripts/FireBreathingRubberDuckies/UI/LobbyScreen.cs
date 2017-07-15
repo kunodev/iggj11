@@ -26,7 +26,7 @@ namespace FireBreathingRubberDuckies.UI
                 JSONObject user = users[_alreadyKnownUsers];
                 GameObject newGo = GameObject.Instantiate(this.LobbyEntryPrefab);
                 newGo.transform.SetParent(this.LobbyText.transform);
-                newGo.GetComponent<LobbyEntry>().Init(user);
+                newGo.GetComponent<LobbyEntry>().Init(gs, (int) user[NetworkConstants.USER_ID].i);
             }
         }
         
