@@ -13,7 +13,9 @@ public class ActionSetQuestion extends AbstractAction
 	private QuestionLoader questionLoader;
 
 	public ActionSetQuestion() {
-		questionLoader = new QuestionLoader(new String[]{"questions/Beispiel.csv"});
+		questionLoader = new QuestionLoader(new String[]{"questions/files/Egypt.txt",
+                "questions/files/France.txt",
+                "questions/files/russia.txt"});
 	}
 
 	@Override
