@@ -39,6 +39,7 @@ public class User implements JSONSerializable
 		obj.put("id", this.id);
 		obj.put("name", this.userName);
 		obj.put("points", this.points);
+		obj.put("totalPoints", this.totalPoints);
 		obj.put("role", this.role);
 		obj.put("color", this.color);
 
