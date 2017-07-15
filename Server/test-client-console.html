@@ -1,0 +1,91 @@
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+
+<b>Get State:</b><br>
+<input type="button" id="get_state" value="get">
+
+<br><br><br>
+
+
+<b>Login User:</b><br>
+UserName: <input type="text" id="userName" value="UserName"><br>
+<input type="button" id="login" value="join">
+
+<br><br><br>
+
+
+<b>Start Game:</b><br>
+<input type="button" id="start" value="start">
+
+<br><br><br>
+
+<b>Add Answer:</b><br>
+UserId: <input type="number" value="1" id="answer_user_id"><br>
+Answer: <input type="text" value="Answer ... blah ...." id="answer"><br>
+<input type="button" id="add_answer" value="submit answer">
+
+<br><br><br>
+
+<b>Answer Check (GameMaster):</b><br>
+UserId: <input type="number" value="1" id="check_user_id"><br>
+Answer State: <select id="answer_state">
+    <option value="correct">OK</option>
+    <option value="incorrect">Falsch</option>
+</select>
+<input type="button" id="check_answer" value="check answer">
+
+<br><br><br>
+
+<b>Submit Answer Checks (GameMaster):</b><br>
+<input type="button" id="check_answer_submit" value="submit">
+
+<br><br><br>
+
+<br><br>
+<pre id="responses"></pre>
+
+<script>
+    $('#get_state').bind('click', function () {
+        $.get("http://localhost:1337", function (data) {
+            $("#responses").append(data + "<br>");
+        });
+    });
+    $('#login').bind('click', function () {
+        $.post("http://localhost:1337", {"action": "login", 'name': $('#userName').val()}, function (data) {
+            $("#responses").append(data + "<br>");
+        });
+    });
+
+
+    $('#start').bind('click', function () {
+        $.post("http://localhost:1337", {"action": "startgame"}, function (data) {
+            $("#responses").append(data + "<br>");
+        });
+    });
+
+    $('#add_answer').bind('click', function () {
+        $.post("http://localhost:1337", {
+            "action": "answer",
+            "user_id": $('#answer_user_id').val(),
+            "answer": $('#answer').val()
+        }, function (data) {
+            $("#responses").append(data + "<br>");
+        });
+    });
+
+    $('#check_answer').bind('click', function () {
+        $.post("http://localhost:1337", {
+            "action": "answercheck",
+            "user_id": $('#check_user_id').val(),
+            "answer_state": $('#answer_state').val()
+        }, function (data) {
+            $("#responses").append(data + "<br>");
+        });
+    });
+
+    $('#check_answer_submit').bind('click', function () {
+        $.post("http://localhost:1337", {"action": "answerchecksubmit"}, function (data) {
+            $("#responses").append(data + "<br>");
+        });
+    });
+</script>
