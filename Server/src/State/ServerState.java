@@ -10,9 +10,7 @@ import org.json.simple.JSONObject;
 import questions.Question;
 import questions.QuestionLoader;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class ServerState implements JSONSerializable
 {
@@ -36,6 +34,7 @@ public class ServerState implements JSONSerializable
 	private JSONArrayList<User>    users     = new JSONArrayList<>();
 	private JSONArrayList<Country> countries = new JSONArrayList<>();
 
+
 	private JSONHashMap<String, Integer> countryOwners = new JSONHashMap<>();
 	private Question currentQuestionObject;
 	private JSONHashMap<Integer, String> givenAnswers = new JSONHashMap<>();
@@ -45,6 +44,7 @@ public class ServerState implements JSONSerializable
 //	private String currentQuestion;
 //	private String currentAnswer;
 	private Country currentCountry;
+	private Map<String, Integer> totalCountryRounds = new HashMap<String, Integer>();
 
     private QuestionLoader questionLoader = new QuestionLoader(new String[]{
             "questions/files/Egypt.txt",
@@ -153,6 +153,11 @@ public class ServerState implements JSONSerializable
 
 	public void setCurrentCountry(Country country)
 	{
+		if(currentCountry != null) {
+			//Increment passed rounds
+			int amountRoundsPassed = this.totalCountryRounds.get(this.currentCountry.getCountryCode());
+			this.totalCountryRounds.put(this.currentCountry.getCountryCode(), amountRoundsPassed +1);
+		}
 		this.currentCountry = country;
 	}
 
@@ -187,6 +192,8 @@ public class ServerState implements JSONSerializable
 				stateData.put("realAnswer", currentQuestionObject.answers.get(0));	//todo mehrere Antworten ermöglichen?
 				stateData.put("answers", givenAnswers.toJSON());
 				stateData.put("answerStates", answerStates.toJSON());
+				boolean repeatedQuestion = questionLoader.isRepeatedQuestion(currentQuestionObject, currentCountry.getCountryCode());
+				stateData.put("repeatMultiplier", repeatedQuestion ? POINTS_CORRECT_REPEAT : POINTS_CORRECT_ANSWER);
 				break;
 		}
 
@@ -252,4 +259,10 @@ public class ServerState implements JSONSerializable
 
     }
 
+	public int getTotalRoundsInCountry(Country currentCountry) {
+    	if(this.totalCountryRounds.containsKey(currentCountry.getCountryCode())) {
+    		return totalCountryRounds.get(currentCountry.getCountryCode());
+		}
+		return 0;
+	}
 }

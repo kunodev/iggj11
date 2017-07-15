@@ -38,7 +38,7 @@ public class ActionSetQuestion extends AbstractAction
             }
 
             Question question = null;
-            if(state.getCurrentRound() == ServerState.ROUNDS_PER_COUNTRY){
+            if(state.getCurrentRound() == 1 && state.getTotalRoundsInCountry(state.getCurrentCountry()) > 0){
 		        question = state.getQuestionLoader().getRepeatedQuestion(state.getCurrentCountry().getCountryCode());
             }else {
                 question = state.getQuestionLoader().getQuestionForCountry(state.getCurrentCountry().getCountryCode());

@@ -16,7 +16,6 @@ public class ActionChoseCountry extends AbstractAction
 		if (currentCountry != null) {
 			excludeCountry = currentCountry.getCountryCode();
 		}
-
 		state.setCurrentCountry(state.getRandomCountry(excludeCountry));
 	}
 }

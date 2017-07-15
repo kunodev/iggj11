@@ -6,7 +6,8 @@ import java.util.*;
 /**
  * Created by sneki on 15.07.2017.
  */
-public class QuestionLoader {
+public class
+QuestionLoader {
 
     Map<String, List<Question>> questionsPerCountry;
     Map<String, List<Question>> alreadyAskedQuestions;
