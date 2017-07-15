@@ -7,6 +7,8 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import questions.Question;
+import questions.QuestionLoader;
 
 public class Server
 {
@@ -32,10 +34,14 @@ public class Server
 	private class RequestHandler implements HttpHandler
 	{
 		private ServerState state;
+		private QuestionLoader questionLoader;
+
 
 		RequestHandler(ServerState state)
 		{
 			this.state = state;
+			//alle CSV-Dateien mit relativem Pfad reinwerfen
+			questionLoader = new QuestionLoader(new String[]{"questions/Beispiel.csv"});
 		}
 
 		@Override
@@ -60,8 +66,12 @@ public class Server
 						// todo: Timeouts in eigene Methode verschieben
 						setTimeout(() ->
 						{
-							// todo: Frage aus GameDesign Daten generieren
-							state.setQuestion("Warum macht deine Mudda Passfotos bei GoogleEarth?", "Weil sie ein Weltling ist!");
+							Question question = questionLoader.getQuestionForCountry("Deutschland");	//todo angefragtes Land reintun
+							if(question == null){
+								state.setQuestion("Keine Frage gefunden", ""); //todo Was dann?
+							}else {
+								state.setQuestion(question.question, question.answers.get(0));    //todo ggf. für mehrere Antworten optimieren :)
+							}
 							state.setState(ServerState.STATE_QUESTION);
 						}, 5000);
 						break;
@@ -129,4 +139,5 @@ public class Server
 			}
 		}).start();
 	}
+
 }

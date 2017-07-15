@@ -1,11 +1,7 @@
 package questions;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 /**
  * Created by sneki on 15.07.2017.
@@ -16,21 +12,27 @@ public class QuestionLoader {
 
     public QuestionLoader(String[] csvFilePaths) {
 
+        questionsPerLand = new HashMap<String, List<Question>>();
+
         for(String s : csvFilePaths){
 
             if(s.isEmpty()){
                 continue;
             }
 
-
             String line = "";
             String cvsSplitBy = ",";
 
-            try (BufferedReader br = new BufferedReader(new FileReader(s))) {
+            InputStream is =ClassLoader.getSystemResourceAsStream(s);
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 
                 while ((line = br.readLine()) != null) {
-                    // use comma as separator
+
                     String[] entries = line.split(cvsSplitBy);
+
+                    for(int i = 0; i<entries.length;i++){
+                        entries[i] = entries[i].replaceAll("\"", "");
+                    }
 
                     if(entries.length>=2){
                         if(!questionsPerLand.containsKey(entries[0])){
@@ -58,12 +60,26 @@ public class QuestionLoader {
         return questionsPerLand;
     }
 
-//    public Question getQuestionForCountry(String country){
-//
-//
-//
-//    }
+
+    /**
+     * Spuckt ein zufälliges Question-Objekt aus
+     * @param country
+     * @return wenn das Land nicht in der Map ist -> null
+     */
+    public Question getQuestionForCountry(String country){
+
+        if(questionsPerLand.containsKey(country)){
+            return giveRandomQuestion(questionsPerLand.get(country));
+        }
+
+        return null;
+    }
 
 
+    private Question giveRandomQuestion (List<Question> questions){
+
+        Random random = new Random();
+        return questions.get(random.nextInt(questions.size()-1));
+    }
 
 }
