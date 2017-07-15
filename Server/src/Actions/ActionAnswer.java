@@ -1,5 +1,6 @@
 package Actions;
 
+import Entity.User;
 import State.ServerState;
 
 import java.util.Map;
@@ -16,7 +17,17 @@ public class ActionAnswer extends AbstractAction
 
 		if (state.didAllPlayersAnswer())
 		{
-			state.setState(ServerState.STATE_ANSER_CHECK);
+			if(state.getCurrentQuestionObject().isGuesstimation){
+				User winner = state.getUserById( state.getQuestionLoader().evaluateGuesstimationQuestion(actions, state));
+				if(winner == null){
+					return;
+				}else{
+					winner.addPoints(ServerState.POINTS_CONQUER_COUNTRY);
+
+				}
+			}else {
+				state.setState(ServerState.STATE_ANSER_CHECK);
+			}
 		}
 	}
 }

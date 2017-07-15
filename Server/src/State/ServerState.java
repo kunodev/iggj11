@@ -37,7 +37,8 @@ public class ServerState implements JSONSerializable
 
 	private JSONHashMap<String, Integer> countryOwners = new JSONHashMap<>();
 	private Question currentQuestionObject;
-	private JSONHashMap<Integer, String> givenAnswers = new JSONHashMap<>();
+
+    private JSONHashMap<Integer, String> givenAnswers = new JSONHashMap<>();
 	private JSONHashMap<Integer, Integer> answerStates = new JSONHashMap<>();
 	private JSONArrayList<Integer> finishedIds = new JSONArrayList<Integer>();
 
@@ -61,6 +62,10 @@ public class ServerState implements JSONSerializable
         return questionLoader;
     }
 
+    public Question getCurrentQuestionObject(){
+        return currentQuestionObject;
+    }
+
 	private int currentRound = 0;
 
 	public void addUser(User user)
@@ -68,10 +73,25 @@ public class ServerState implements JSONSerializable
 		this.users.add(user);
 	}
 
-	public void setState(String state)
+
+	public User getUserById(int id){
+	    for(User u : users){
+	        if(u.getId() == id){
+	            return u;
+            }
+        }
+
+        return null;
+    }
+
+    public void setState(String state)
 	{
 		this.state = state;
 	}
+
+    public JSONHashMap<Integer, String> getGivenAnswers() {
+        return givenAnswers;
+    }
 
 	public void setQuestion(Question question)
 	{
@@ -83,6 +103,8 @@ public class ServerState implements JSONSerializable
 		this.givenAnswers.put(userId, answer);
 		this.finishedIds.add(userId);
 	}
+
+
 
 	public void setAnswerState(int userId, int state)
 	{
@@ -232,17 +254,23 @@ public class ServerState implements JSONSerializable
 
     /**
      * Auswertung nach X Runden im Land und Umverteilung des Landes
+     * @return boolean isGleichstand -> true ja, false nö
      */
-    public void evaluateCountry(){
+    public boolean evaluateCountry(){
 
         int highestScore = 0;
         User winner = null;
 
         for(User u : users){
             //Todo Gleichstände beachten
+
             if(u.getPoints() > highestScore){
                 winner = u;
                 highestScore = u.getPoints();
+            }else if(u.getPoints() != 0 && u.getPoints() == highestScore){
+
+                return true;
+
             }
         }
 
@@ -252,6 +280,8 @@ public class ServerState implements JSONSerializable
                 winner.addPoints(POINTS_CONQUER_COUNTRY);   //Bonuspunkte für Übernahme des Landes
                 countryOwners.put(currentCountry.getCountryCode(),  winner.getId());
             }
+        }else if( highestScore != 0 && highestScore == currentCountry.getHighscore()){
+            return true;
         }
 
         //todo irgendwie mitteilen wer das aktuelle Land jetzt übernommen hat + die Punktzahl
@@ -259,6 +289,8 @@ public class ServerState implements JSONSerializable
         for(User u : users){
             u.resetPoints();
         }
+
+        return false;
 
     }
 

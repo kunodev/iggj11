@@ -1,6 +1,11 @@
 package questions;
 
+import Actions.AbstractAction;
+import JSONUtil.JSONHashMap;
+import State.ServerState;
+
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -11,6 +16,9 @@ QuestionLoader {
 
     Map<String, List<Question>> questionsPerCountry;
     Map<String, List<Question>> alreadyAskedQuestions;
+
+    private Guesstimator guesstimator;
+
     private String[] csvfiles;
 
 
@@ -56,6 +64,50 @@ QuestionLoader {
 
     }
 
+    /**
+     * Return die UserId des Gewinners
+     * @param actions
+     * @param state
+     * @return
+     */
+    public int evaluateGuesstimationQuestion(Map<String, AbstractAction> actions, ServerState state){
+
+        JSONHashMap<Integer, String> answers = state.getGivenAnswers();
+
+        int winner = -1;
+        BigDecimal realAnswer = new BigDecimal(state.getCurrentQuestionObject().answers.get(0));
+        BigDecimal closestAnswer = null;
+
+        for(Map.Entry<Integer, String> entry : answers.entrySet()){
+
+            BigDecimal answer = new BigDecimal(entry.getValue());
+
+            BigDecimal differenz = realAnswer.subtract(answer);
+
+            differenz = differenz.abs();
+
+            if(closestAnswer == null){
+                closestAnswer = differenz;
+                winner = entry.getKey();
+            }else {
+
+                if (differenz.compareTo(closestAnswer) == -1) {
+                    winner = entry.getKey();
+                }
+            }
+        }
+
+        return winner;
+    }
+
+
+    public Question getGuesstimationQuestion(String country){
+        if(guesstimator.getGuesstimationQuestions().containsKey(country)){
+            return giveRandomQuestion(guesstimator.getGuesstimationQuestions().get(country), true);
+        }
+
+        return null;
+    }
 
     public Question getRepeatedQuestion(String country){
 
@@ -100,7 +152,7 @@ QuestionLoader {
 
     //-----------------
 
-    //CSV-Aufbau: Land, Kategorie, Schätz, Frage, Antworten..
+    //CSV-Aufbau: Land, Kategorie, Schätzfrage, Frage, Antworten..
     private void loadQuestions(String[] csvFilePaths){
 
         for(String s : csvFilePaths){
@@ -119,10 +171,12 @@ QuestionLoader {
 
                     String[] entries = line.split(cvsSplitBy);
 
+                    //" zu Anfang und Ende der Zeile rauswerfen
                     for(int i = 0; i<entries.length;i++){
                         entries[i] = entries[i].replaceAll("\"", "");
                     }
 
+                    //Wenn das Entry länger als xx ist, gibt es Antworten
                     if(entries.length>=4){
                         if(!questionsPerCountry.containsKey(entries[0])){
                             questionsPerCountry.put(entries[0], new ArrayList<Question>());
@@ -133,8 +187,8 @@ QuestionLoader {
                         for(int i=4; i<entries.length;i++){
                             answers.add(entries[i]);
                         }
-
-                        questionsPerCountry.get(entries[0]).add(new Question(entries [1], entries[3], answers));
+                        boolean isGuesstimation = entries[2].equals("s");
+                        questionsPerCountry.get(entries[0]).add(new Question(entries [1], isGuesstimation, entries[3], answers));
                     }
                 }
 
@@ -142,6 +196,9 @@ QuestionLoader {
                 e.printStackTrace();
             }
         }
+
+        guesstimator = new Guesstimator(questionsPerCountry);
+
     }
 
 
