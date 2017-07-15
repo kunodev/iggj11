@@ -14,15 +14,17 @@ import java.util.*;
 
 public class ServerState implements JSONSerializable
 {
-	public static final String STATE_LOBBY       = "lobby";
-	public static final String STATE_WORLD       = "world";
-	public static final String STATE_QUESTION    = "question";
-	public static final String STATE_ANSER_CHECK = "answerCheck";
+	public static final String STATE_LOBBY        = "lobby";
+	public static final String STATE_WORLD        = "world";
+	public static final String STATE_QUESTION     = "question";
+	public static final String STATE_ANSWER_CHECK = "answerCheck";
 
 	public static final int POINTS_CORRECT_ANSWER = 2;
 	public static final int POINTS_CORRECT_REPEAT = 1;
 	public static final int POINTS_CONQUER_COUNTRY = 1;
 	public static final int ROUNDS_PER_COUNTRY = 3;
+
+	public static final int QUESTION_TIMEOUT_SEK = 20;
 
 	private int maxUserId = 0;
 
@@ -37,8 +39,8 @@ public class ServerState implements JSONSerializable
 	private JSONHashMap<Integer, Integer> answerStates = new JSONHashMap<>();
 	private JSONArrayList<Integer> finishedIds = new JSONArrayList<Integer>();
 
-//	private String currentQuestion;
-//	private String currentAnswer;
+	private long questionTimeout = 0;
+
 	private Country currentCountry;
 	private Map<String, Integer> totalCountryRounds = new HashMap<String, Integer>();
 
@@ -75,6 +77,11 @@ public class ServerState implements JSONSerializable
 	public void setQuestion(Question question)
 	{
 		this.currentQuestionObject = question;
+		this.setQuestionTimeout(getTime() + QUESTION_TIMEOUT_SEK);
+	}
+
+	public void setQuestionTimeout(long timeout) {
+		this.questionTimeout = timeout;
 	}
 
 	public void addAnswer(int userId, String answer)
@@ -157,7 +164,6 @@ public class ServerState implements JSONSerializable
 	{
 		if(currentCountry != null) {
 			//Increment passed rounds
-
 			int amountRoundsPassed = this.getTotalRoundsInCountry(currentCountry);
 			this.totalCountryRounds.put(this.currentCountry.getCountryCode(), amountRoundsPassed +1);
 		}
@@ -186,12 +192,13 @@ public class ServerState implements JSONSerializable
 				break;
 
 			case STATE_QUESTION:
-                stateData.put("currentCountry", currentCountry.getCountryCode());
+				stateData.put("currentCountry", currentCountry.getCountryCode());
 				stateData.put("question", currentQuestionObject.question);
-				stateData.put("finishedUsers",this.finishedIds.toJSON());
+				stateData.put("finishedUsers", this.finishedIds.toJSON());
+				stateData.put("questionTimeout", this.questionTimeout);
 				break;
 
-			case STATE_ANSER_CHECK:
+			case STATE_ANSWER_CHECK:
 				stateData.put("question", currentQuestionObject.question);
 				stateData.put("realAnswer", currentQuestionObject.answers.get(0));	//todo mehrere Antworten ermöglichen?
 				stateData.put("answers", givenAnswers.toJSON());
@@ -268,5 +275,19 @@ public class ServerState implements JSONSerializable
     		return totalCountryRounds.get(currentCountry.getCountryCode());
 		}
 		return 0;
+	}
+
+	private long getTime() {
+		return (new Date()).getTime() / 1000;
+	}
+
+	public String getState()
+	{
+		return state;
+	}
+
+	public long getQuestionExpireTime()
+	{
+		return questionTimeout;
 	}
 }

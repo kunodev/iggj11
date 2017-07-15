@@ -3,9 +3,7 @@ package Actions;
 import ServerUtil.Timeout;
 import State.ServerState;
 import questions.Question;
-import questions.QuestionLoader;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +49,13 @@ public class ActionSetQuestion extends AbstractAction
 			}else {
 				state.setQuestion(question);
 			}
+
+			long timeout = state.getQuestionExpireTime();
+			Timeout.setTimeout(() -> {
+				if (state.getState().equals(ServerState.STATE_QUESTION) && state.getQuestionExpireTime() == timeout) {
+					state.setState(ServerState.STATE_ANSWER_CHECK);
+				}
+			}, ServerState.QUESTION_TIMEOUT_SEK * 1000);
 
 			state.setState(ServerState.STATE_QUESTION);
 		}, 5000);
