@@ -124,7 +124,7 @@ public class ServerState implements JSONSerializable
 
 	public int generateUserId()
 	{
-		return ++this.maxUserId;
+		return this.maxUserId++;
 	}
 
 	public boolean didAllPlayersAnswer()
