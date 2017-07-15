@@ -49,7 +49,8 @@ public class ServerState implements JSONSerializable
     private QuestionLoader questionLoader = new QuestionLoader(new String[]{
             "questions/files/Egypt.txt",
             "questions/files/France.txt",
-            "questions/files/russia.txt"});
+            "questions/files/russia.txt",
+            "questions/files/USA.txt"});
 
 
 
