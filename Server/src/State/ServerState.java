@@ -36,6 +36,7 @@ public class ServerState implements JSONSerializable
 	private Question currentQuestionObject;
 	private JSONHashMap<Integer, String> givenAnswers = new JSONHashMap<>();
 	private JSONHashMap<Integer, String> answerStates = new JSONHashMap<>();
+	private JSONArrayList<Integer> finishedIds = new JSONArrayList<Integer>();
 //	private String currentQuestion;
 //	private String currentAnswer;
 	private Country currentCountry;
@@ -58,6 +59,7 @@ public class ServerState implements JSONSerializable
 	public void addAnswer(int userId, String answer)
 	{
 		this.givenAnswers.put(userId, answer);
+		this.finishedIds.add(userId);
 	}
 
 	public void setAnswerState(int userId, String state)
@@ -86,6 +88,7 @@ public class ServerState implements JSONSerializable
 	{
 		this.givenAnswers.clear();
 		this.answerStates.clear();
+		this.finishedIds.clear();
 	}
 
 	public int generateUserId()
@@ -149,6 +152,7 @@ public class ServerState implements JSONSerializable
 			case STATE_QUESTION:
                 stateData.put("currentCountry", currentCountry.getCountryCode());
 				stateData.put("question", currentQuestionObject.question);
+				stateData.put("finishedUsers",this.finishedIds.toJSON());
 				break;
 
 			case STATE_ANSER_CHECK:
