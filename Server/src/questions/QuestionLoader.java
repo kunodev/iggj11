@@ -8,11 +8,19 @@ import java.util.*;
  */
 public class QuestionLoader {
 
-    Map<String, List<Question>> questionsPerLand;
+    Map<String, List<Question>> questionsPerCountry;
+    private String[] csvfiles;
 
     public QuestionLoader(String[] csvFilePaths) {
 
-        questionsPerLand = new HashMap<String, List<Question>>();
+        this.csvfiles = csvFilePaths;
+        loadQuestionsFromCSV(csvFilePaths);
+    }
+
+
+    private void loadQuestionsFromCSV(String[] csvFilePaths){
+
+        questionsPerCountry = new HashMap<String, List<Question>>();
 
         for(String s : csvFilePaths){
 
@@ -35,8 +43,8 @@ public class QuestionLoader {
                     }
 
                     if(entries.length>=2){
-                        if(!questionsPerLand.containsKey(entries[0])){
-                            questionsPerLand.put(entries[0], new ArrayList<Question>());
+                        if(!questionsPerCountry.containsKey(entries[0])){
+                            questionsPerCountry.put(entries[0], new ArrayList<Question>());
                         }
 
                         List<String> answers = new ArrayList<>();
@@ -45,7 +53,7 @@ public class QuestionLoader {
                             answers.add(entries[i]);
                         }
 
-                        questionsPerLand.get(entries[0]).add(new Question(entries[1], answers));
+                        questionsPerCountry.get(entries[0]).add(new Question(entries[1], answers));
                     }
                 }
 
@@ -53,23 +61,26 @@ public class QuestionLoader {
                 e.printStackTrace();
             }
         }
+
     }
 
 
     public Map<String, List<Question>> getQuestionMap(){
-        return questionsPerLand;
+        return questionsPerCountry;
     }
 
 
     /**
-     * Spuckt ein zufälliges Question-Objekt aus
-     * @param country
-     * @return wenn das Land nicht in der Map ist -> null
+     * Spuckt ein zufälliges Question-Objekt zu dem Land aus, was übergeben wird.
+     * Die gefundene Frage wird aus der Liste aller Fragen gelöscht.
+     *
+     * @param country Land für das man eine Frage will
+     * @return wenn das Land nicht in der Map ist oder keine Fragen mehr da sind -> null
      */
     public Question getQuestionForCountry(String country){
 
-        if(questionsPerLand.containsKey(country)){
-            return giveRandomQuestion(questionsPerLand.get(country));
+        if(questionsPerCountry.containsKey(country)){
+            return giveRandomQuestion(questionsPerCountry.get(country));
         }
 
         return null;
@@ -79,7 +90,15 @@ public class QuestionLoader {
     private Question giveRandomQuestion (List<Question> questions){
 
         Random random = new Random();
-        return questions.get(random.nextInt(questions.size()-1));
+        return questions.size()>0 ? questions.remove(random.nextInt(questions.size()-1)) : null;
+    }
+
+    /**
+     * Läd alle Fragen neu aus den Anfangs übergebenen CSV-Dateien ein,
+     * falls man die Fragen zurücksetzen will
+     */
+    public void reloadAllQuestions(){
+        loadQuestionsFromCSV(csvfiles);
     }
 
 }
