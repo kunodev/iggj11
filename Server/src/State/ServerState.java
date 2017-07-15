@@ -52,6 +52,9 @@ public class ServerState implements JSONSerializable
             "questions/files/russia.txt",
             "questions/files/USA.txt"});
 
+//    private QuestionLoader questionLoader = new QuestionLoader(new String[]{
+//            "questions/Beispiel.csv"}); //zum Testen mit Beispiel :) :)
+
 
 
     public QuestionLoader getQuestionLoader(){
