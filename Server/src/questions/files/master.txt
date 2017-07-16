@@ -3,6 +3,6 @@
 "Master","m","","Welches Land ist das grösste Flächenland der Erde?","Russland"
 "Master","m","","Welches Land braut das beste Bier, hat aber trotzdem zwei Weltkriege angezettelt?","Deutschland"
 "Master","m","","In welchem Land gibt es die meisten endemischen Tierarten?","Australien"
-"Master","m","","Welches Land ist bekannt für erotische Holzschnitte mit achtarmigen Tintenfischen aus dem frühen 19. Jahrhundert?"
+"Master","m","","Welches Land ist bekannt für erotische Holzschnitte mit achtarmigen Tintenfischen aus dem frühen 19. Jahrhundert?","Japan"
 "Master","m","","Auf welchem Kontinent ist die indigene Bevölkerung nahezu ausgerottet?","Südamerika"
 "Master","m","","In which Country does the President grab them by the Pussy?","TrumpLand"
