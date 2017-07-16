@@ -46,7 +46,7 @@ public class Server
 			state.sessionJSON.addCountry(new Country("jp", "Japan"));
 			//statsessionJSON.e.addCountry(new Country("tr", "Türkei"));
 			state.sessionJSON.addCountry(new Country("oz", "Australien"));
-			//statsessionJSON.e.addCountry(new Country("it", "Italien"));
+			state.sessionJSON.addCountry(new Country("it", "Italien"));
 			state.sessionJSON.addCountry(new Country("de", "Deutschland"));
 			state.sessionJSON.addCountry(new Country("fr", "Frankreich"));
 			state.sessionJSON.addCountry(new Country("ru", "Russland"));
