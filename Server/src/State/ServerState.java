@@ -1,7 +1,6 @@
 package State;
 
 import JSONUtil.JSONSerializable;
-import ServerUtil.Timeout;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import questions.Question;
@@ -14,11 +13,11 @@ public class ServerState implements JSONSerializable
 	public static final String STATE_LOBBY       = "lobby";
 	public static final String STATE_WORLD       = "world";
 	public static final String STATE_QUESTION    = "question";
-	public static final String STATE_ANSER_CHECK = "answerCheck";
+	public static final String StATE_ANSWER_CHECK = "answerCheck";
 
 	public static final int POINTS_CORRECT_ANSWER = 2;
 	public static final int POINTS_CORRECT_REPEAT = 1;
-
+	public static final int QUESTION_TIMEOUT_SEK = 30;
 
 	private String                 state     = STATE_LOBBY;
 
@@ -122,7 +121,7 @@ public class ServerState implements JSONSerializable
 				stateData.put("questionTimeout", this.questionTimeout);
 				break;
 
-			case STATE_ANSER_CHECK:
+			case StATE_ANSWER_CHECK:
 				stateData.put("realAnswer", currentQuestionObject.answers.get(0));	//todo mehrere Antworten ermöglichen?
 				stateData.put("answers", questionJSON.givenAnswers.toJSON());
 				stateData.put("answerStates", questionJSON.answerStates.toJSON());
