@@ -10,7 +10,7 @@ public class ActionAnswerCheckSubmit extends AbstractAction
 	public void execute(Map<String, AbstractAction> actions, ServerState state, Map<String, Object> params)
 	{
 		state.rewardCorrectAnswers();
-		state.resetAnswers();
-		actions.get(AbstractAction.ACTION_START).execute(actions, state, params);
+		state.questionJSON.resetAnswers();
+		state.startNextQuestion();
 	}
 }

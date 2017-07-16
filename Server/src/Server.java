@@ -25,6 +25,7 @@ public class Server
 		HttpServer  server  = HttpServer.create(new InetSocketAddress(1337), 0);
 		HttpContext context = server.createContext("/", new RequestHandler(new ServerState()));
 		context.getFilters().add(new ParameterFilter());
+
 		server.start();
 	}
 
@@ -42,36 +43,38 @@ public class Server
 			this.actions.put(AbstractAction.ACTION_ANSWER, new ActionAnswer());
 			this.actions.put(AbstractAction.ACTION_ANSWER_CHECK, new ActionAnswerCheck());
 			this.actions.put(AbstractAction.ACTION_ANSWER_CHECK_SUBMIT, new ActionAnswerCheckSubmit());
-			this.actions.put(AbstractAction.ACTION_SET_QUESTION, new ActionSetQuestion());
-			this.actions.put(AbstractAction.ACTION_CHOSE_COUNTRY, new ActionChoseCountry());
 
 //			state.addCountry(new Country("br", "Brasilien"));
-			state.addCountry(new Country("jp", "Japan"));
+			state.sessionJSON.addCountry(new Country("jp", "Japan"));
 //			state.addCountry(new Country("tr", "Türkei"));
-			state.addCountry(new Country("oz", "Australien"));
-			state.addCountry(new Country("de", "Deutschland"));
-			state.addCountry(new Country("fr", "Frankreich"));
-			state.addCountry(new Country("ru", "Russland"));
-			state.addCountry(new Country("eg", "Ägypten"));
-			state.addCountry(new Country("us", "USA"));
+			state.sessionJSON.addCountry(new Country("oz", "Australien"));
+			state.sessionJSON.addCountry(new Country("de", "Deutschland"));
+			state.sessionJSON.addCountry(new Country("fr", "Frankreich"));
+			state.sessionJSON.addCountry(new Country("ru", "Russland"));
+			state.sessionJSON.addCountry(new Country("eg", "Ägypten"));
+			state.sessionJSON.addCountry(new Country("us", "USA"));
 		}
 
 		@Override
-		public void handle(HttpExchange exch) throws IOException
+		public void handle(HttpExchange exch)
 		{
-			if ("post".equalsIgnoreCase(exch.getRequestMethod()))
-			{
-				Map<String, Object> params = (Map<String, Object>) exch.getAttribute("parameters");
-				String              requestedAction = (String) params.get("action");
+			try {
+				if ("post".equalsIgnoreCase(exch.getRequestMethod()))
+				{
+					Map<String, Object> params = (Map<String, Object>) exch.getAttribute("parameters");
+					String              requestedAction = (String) params.get("action");
 
-				AbstractAction action = this.actions.get(requestedAction);
-				if (action != null) {
-					action.execute(this.actions, state, params);
+					AbstractAction action = this.actions.get(requestedAction);
+					if (action != null) {
+						action.execute(this.actions, state, params);
+					}
+
 				}
 
+				sendResponse(exch, state.toJSON().toString());
+			} catch (Throwable e) {
+				e.printStackTrace();
 			}
-
-			sendResponse(exch, state.toJSON().toString());
 		}
 
 		private void sendResponse(HttpExchange exch, String response) throws IOException

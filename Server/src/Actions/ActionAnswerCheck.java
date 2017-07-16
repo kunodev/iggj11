@@ -11,7 +11,6 @@ public class ActionAnswerCheck extends AbstractAction
 	{
 		int userId = Integer.parseInt((String) params.get("user_id"));
 		String answerState = (String) params.get("answer_state");
-		state.setAnswerState(userId, Integer.parseInt(answerState));
-
+		state.questionJSON.setAnswerState(userId, Integer.parseInt(answerState));
 	}
 }

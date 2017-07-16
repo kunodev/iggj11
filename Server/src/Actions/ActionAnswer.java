@@ -12,7 +12,7 @@ public class ActionAnswer extends AbstractAction
 		int userId = Integer.parseInt((String) params.get("user_id"));
 		String answer = (String) params.get("answer");
 
-		state.addAnswer(userId, answer);
+		state.questionJSON.addAnswer(userId, answer);
 
 		if (state.didAllPlayersAnswer())
 		{
