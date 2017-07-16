@@ -1,0 +1,13 @@
+
+<h2>Spieler</h2>
+<div class="list-group">
+    <div class="list-group-item" ng-repeat="user in state.s.users">
+        <h4 class="list-group-item-heading" style="color: {{user.color}};">{{user.name}}</h4>
+    </div>
+</div>
+<div class="form-group" ng-if="isGameMaster()">
+    <input type="button" class="btn btn-primary btn-lg btn-block" ng-click="startGame()" value="Spiel Starten">
+</div>
+<div class="form-group" ng-if="!isGameMaster()">
+    <input type="button" class="btn btn-primary btn-lg btn-block disabled" value="Warte auf GameMaster">
+</div>

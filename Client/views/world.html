@@ -1,0 +1,13 @@
+<center><h1>WELTLING</h1></center>
+<div style="position: relative; height: 250px;">
+    <img src="img/world_borders.png" style="width: 600px; position: absolute; top: 0; left: 0;">
+    <img ng-repeat="(countryCode, userId) in state.s.stateData.countries" src="img/world_overlays/{{countryCode}}_{{userId}}.png" style="width: 600px; position: absolute; top: 0; left: 0;">
+</div>
+
+<div class="list-group">
+    <div class="list-group-item" ng-repeat="user in state.s.users">
+        <h4 class="list-group-item-heading" style="color: {{user.color}};">{{user.name}}</h4>
+        <p><small>{{user.points}} Punkte im aktuellen Land</small></p>
+        <p><small>{{user.totalPoints}} Punkte Gesamt</small></p>
+    </div>
+</div>

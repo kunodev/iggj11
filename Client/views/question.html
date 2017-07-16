@@ -1,0 +1,42 @@
+<div ng-if="countryOverlay" id="countryOverlay">
+    <h4>Willkommen in</h4>
+    <img src="img/flags/{{countryOverlay}}.svg">
+    <h3>{{getCountry(countryOverlay).name}}</h3>
+</div>
+
+<div ng-if="!answered">
+    <div class="panel panel-default">
+        <div class="panel-heading">{{getCurrentCountry()}}</div>
+        <div class="panel-body">
+            {{state.s.stateData.question}}
+        </div>
+    </div>
+
+    <p>Deine Antwort:</p>
+    <div class="form-group">
+        <textarea class="form-control" ng-model="answer"></textarea>
+    </div>
+    <div class="form-group">
+        <input type="button" class="btn btn-primary btn-lg btn-block" ng-click="sendAnswer(answer)" value="Antwort Absenden">
+    </div>
+</div>
+
+<div class="list-group" ng-if="answered">
+    <div class="list-group-item" ng-repeat="user in state.s.users">
+        <h4 class="list-group-item-heading" style="color: {{user.color}};">{{user.name}}</h4>
+        <p ng-if="isUserDone(user.id)">
+            <small><i class="fa fa-check-square-o" aria-hidden="true"></i> Antwort abgegeben!</small>
+        </p>
+        <p ng-if="!isUserDone(user.id)">
+            <small><i class="fa fa-square-o" aria-hidden="true"></i> Antwort ausstehend!</small>
+        </p>
+    </div>
+</div>
+
+
+<div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="{{getTimeoutProgress()}}"
+         aria-valuemin="0" aria-valuemax="100" style="width:{{getTimeoutProgress()}}%;">
+    </div>
+</div>
+

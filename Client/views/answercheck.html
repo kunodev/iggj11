@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Frage:</div>
+    <div class="panel-body">
+        {{state.s.stateData.question}}
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">Korrekte Antwort:</div>
+    <div class="panel-body">
+        {{state.s.stateData.realAnswer}}
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">Abgegebene Antworten:</div>
+    <div class="list-group" ng-if="state.s.state == 'answerCheck'">
+        <div class="list-group-item" ng-repeat="(userId, answer) in state.s.stateData.answers">
+            <div style="float: right; font-size: 20px;">
+                <i class="{{isGameMaster() ? 'answercheck-star' : ''}} fa fa-frown-o"
+                   ng-if="isGameMaster()"
+                   ng-click="sendState(userId, 0)"
+                   ng-mouseover="mouseOver(userId, 0)"
+                   ng-mouseout="mouseOut()"
+                   aria-hidden="true"></i>
+                <i ng-repeat="i in [1,2,3,4,5]"
+                   ng-click="sendState(userId, i)"
+                   ng-mouseover="mouseOver(userId, i)"
+                   ng-mouseout="mouseOut()"
+                   class="{{isGameMaster() ? 'answercheck-star' : ''}} fa {{showFilledStar(userId, i) ? 'fa-star' : 'fa-star-o'}}"
+                   aria-hidden="true"></i>
+                {{getPoints(userId)}}
+            </div>
+            <h4 class="list-group-item-heading" style="color: {{state.s.users[$index].color}};">
+                {{state.s.users[userId].name}}
+            </h4>
+            <p>{{answer}}</p>
+        </div>
+    </div>
+</div>
+
+<div class="form-group" ng-if="isGameMaster()">
+    <input type="button" class="btn btn-primary btn-lg btn-block" ng-click="submitCheck()" value="Zur Nächsten Runde">
+</div>
