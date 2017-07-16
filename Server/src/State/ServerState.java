@@ -143,7 +143,7 @@ public class ServerState implements JSONSerializable
 
 			sessionJSON.evaluateCountry(flow.getCurrentCountry());
 			setState(ServerState.STATE_WORLD);
-			Timeout.setTimeout( () -> setState(ServerState.STATE_QUESTION), 3000);
+			Timeout.setTimeout( () -> setState(ServerState.STATE_QUESTION), 5000);
 			rollSimpleQuestions();
 			return;
 		}
