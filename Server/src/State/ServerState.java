@@ -142,14 +142,17 @@ public class ServerState implements JSONSerializable
 			}
 
 			sessionJSON.evaluateCountry(flow.getCurrentCountry());
+
 			flow.setNextRound(sessionJSON);
-			this.flow.setNextRound(this.sessionJSON);
-			Timeout.setTimeout( () -> setState(ServerState.STATE_QUESTION), 5000);
 			rollSimpleQuestions();
+
+			setState(STATE_WORLD);
+			Timeout.setTimeout( () -> setState(ServerState.STATE_QUESTION), 5000);
 			return;
 		}
 		this.flow.setNextRound(this.sessionJSON);
 		rollSimpleQuestions();
+		
 		setState(ServerState.STATE_QUESTION);
 	}
 
