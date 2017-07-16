@@ -42,7 +42,7 @@ public class Server
 			this.actions.put(AbstractAction.ACTION_ANSWER_CHECK, new ActionAnswerCheck());
 			this.actions.put(AbstractAction.ACTION_ANSWER_CHECK_SUBMIT, new ActionAnswerCheckSubmit());
 
-			state.sessionJSON.addCountry(new Country("br", "Brasilien"));
+			state.sessionJSON.addCountry(new Country("br", "Südamerika"));
 			state.sessionJSON.addCountry(new Country("jp", "Japan"));
 			//statsessionJSON.e.addCountry(new Country("tr", "Türkei"));
 			state.sessionJSON.addCountry(new Country("oz", "Australien"));

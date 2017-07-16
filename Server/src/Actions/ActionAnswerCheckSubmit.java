@@ -1,5 +1,6 @@
 package Actions;
 
+import ServerUtil.Timeout;
 import State.ServerState;
 
 import java.util.Map;
@@ -11,6 +12,7 @@ public class ActionAnswerCheckSubmit extends AbstractAction
 	{
 		state.rewardCorrectAnswers();
 		state.questionJSON.resetAnswers();
-		state.startNextQuestion();
+		state.setState(ServerState.STATE_WORLD);
+		Timeout.setTimeout(() -> {state.startNextQuestion();}, 3000);
 	}
 }

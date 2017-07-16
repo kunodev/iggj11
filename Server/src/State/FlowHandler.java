@@ -5,9 +5,6 @@ import Entity.Country;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by kuro on 7/16/17.
- */
 public class FlowHandler {
 
     private Country currentCountry;
@@ -24,7 +21,7 @@ public class FlowHandler {
     }
 
     public boolean wasLastRound() {
-        return this.currentRound >= ROUNDS_PER_COUNTRY-1;
+        return this.currentRound == ROUNDS_PER_COUNTRY;
     }
 
     public void setNextRound(SessionClientInfo sessionJSON) {

@@ -1,5 +1,6 @@
 package State;
 
+import Entity.User;
 import JSONUtil.JSONSerializable;
 import ServerUtil.Timeout;
 import org.json.simple.JSONAware;
@@ -59,7 +60,6 @@ public class ServerState implements JSONSerializable
 	}
 
 	public void InitSession() {
-    	this.flow.setNextRound(this.sessionJSON);
     	this.flow.initRandCountry(this.sessionJSON);
 		setState(ServerState.STATE_WORLD);
 		this.startNextQuestion();
@@ -76,7 +76,6 @@ public class ServerState implements JSONSerializable
 
 			if (answerState > 0)
 			{
-
 			    if(questionLoader.isRepeatedQuestion(currentQuestionObject, flow.getCurrentCountry().getCountryCode())){
                     sessionJSON.getUser(userId).addPoints(POINTS_CORRECT_REPEAT * answerState);
                 }else{
@@ -133,7 +132,7 @@ public class ServerState implements JSONSerializable
 
 	public void startNextQuestion() {
 
-    	if(flow.wasLastRound()) {
+    	if (flow.wasLastRound()) {
 			boolean draw = sessionJSON.evaluateCountryCheckDraw(flow.getCurrentCountry());
 			if(draw) {
 
@@ -147,9 +146,16 @@ public class ServerState implements JSONSerializable
 			rollSimpleQuestions();
 
 			setState(STATE_WORLD);
-			Timeout.setTimeout( () -> setState(ServerState.STATE_QUESTION), 5000);
+			Timeout.setTimeout( () -> {
+				setState(ServerState.STATE_QUESTION);
+
+				for(User u : sessionJSON.users){
+					u.resetPoints();
+				}
+			}, 5000);
 			return;
 		}
+
 		this.flow.setNextRound(this.sessionJSON);
 		rollSimpleQuestions();
 
@@ -158,7 +164,13 @@ public class ServerState implements JSONSerializable
 
 	private void rollSimpleQuestions()  {
 		currentQuestionObject = getQuestionLoader().getQuestionForCountry(flow.getCurrentCountry().getCountryCode());
-		this.setQuestionTimeout(getTime() + QUESTION_TIMEOUT_SEK);
+		long expireTime = getTime() + QUESTION_TIMEOUT_SEK;
+		this.setQuestionTimeout(expireTime);
+		Timeout.setTimeout( () -> {
+			if (getQuestionExpireTime() == expireTime && state.equals(STATE_QUESTION)) {
+				setState(StATE_ANSWER_CHECK);
+			}
+		}, QUESTION_TIMEOUT_SEK * 1000);
 	}
 
 	private long getTime() {

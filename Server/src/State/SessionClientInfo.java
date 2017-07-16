@@ -8,9 +8,6 @@ import JSONUtil.JSONHashMap;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by kuro on 7/16/17.
- */
 public class SessionClientInfo {
 
     //Session Persistent
@@ -95,12 +92,6 @@ public class SessionClientInfo {
                 winner.addPoints(POINTS_CONQUER_COUNTRY);   //Bonuspunkte für Übernahme des Landes
                 countryOwners.put(current.getCountryCode(),  winner.getId());
             }
-        }
-
-        //todo irgendwie mitteilen wer das aktuelle Land jetzt übernommen hat + die Punktzahl
-
-        for(User u : users){
-            u.resetPoints();
         }
     }
 }
