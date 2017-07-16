@@ -16,10 +16,10 @@
 "fr","g","","Nenne x Länder, die an Frankreich grenzen!","Spanien, Luxemburg, Belgien, Andorra, Niederlande, Deutschland, Schweiz, Italien"
 "fr","g","","Welches Land grenzt nicht an Frankreich: Spanien, Niederlande, Portugal, Deutschland","Portugal"
 "fr","g","","Wie heisst der höchste Berg in Frankreich?","Montblanc"
-"fr","g","s","Wie hoch ist der Montblanc?","4810m"		-schätzfrage
+"fr","g","s","Wie hoch ist der Montblanc (in m)?","4810"
 "fr","g","","Nenne x Französische Überseegebiete","Franz.-Guyana,Guadeloupe,Martinique,Mayotte,Reunion"
 "fr","g","","Wie heisst das Französische Überseegebeiet auf dem Südamerikanischen Festland?","Franz.-Guyana"
-"fr","g","","Nenne x Städte, die in Frankreich liegen","Paris,Marseille,Lyon,Toulouse,Nizza,Nantes,Strassbourg,Montpellier,Bordeaux,Lille,Rennes"
+"fr","g","","Nenne x Städte, die in Frankreich liegen","Paris, Marseille, Lyon, Toulouse, Nizza, Nantes, Strassbourg, Montpellier, Bordeaux, Lille, Rennes"
 "fr","h","","Welcher große König wird in Deutschland und in Frankreich gleichermaßen verehrt?","Karl der Große"
 "fr","h","","Wie nennen die Franzosen Karl den Großen?","Charlemagne"
 "fr","p","","Wer gewann die Wahlen 2017 in Frankreich?","Macron"
