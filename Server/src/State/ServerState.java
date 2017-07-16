@@ -120,6 +120,7 @@ public class ServerState implements JSONSerializable
 				stateData.put("realAnswer", currentQuestionObject.answers.get(0));	//todo mehrere Antworten ermöglichen?
 				stateData.put("answers", questionJSON.givenAnswers.toJSON());
 				stateData.put("answerStates", questionJSON.answerStates.toJSON());
+				stateData.put("question", currentQuestionObject.question);
 				boolean repeatedQuestion = questionLoader.isRepeatedQuestion(currentQuestionObject, flow.getCurrentCountry().getCountryCode());
 				stateData.put("repeatMultiplier", repeatedQuestion ? POINTS_CORRECT_REPEAT : POINTS_CORRECT_ANSWER);
 				break;
