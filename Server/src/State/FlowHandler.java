@@ -24,7 +24,7 @@ public class FlowHandler {
     }
 
     public boolean wasLastRound() {
-        return this.currentRound >= ROUNDS_PER_COUNTRY;
+        return this.currentRound >= ROUNDS_PER_COUNTRY-1;
     }
 
     public void setNextRound(SessionClientInfo sessionJSON) {

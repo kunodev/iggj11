@@ -152,7 +152,7 @@ public class ServerState implements JSONSerializable
 		}
 		this.flow.setNextRound(this.sessionJSON);
 		rollSimpleQuestions();
-		
+
 		setState(ServerState.STATE_QUESTION);
 	}
 
