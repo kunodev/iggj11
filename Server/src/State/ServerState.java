@@ -53,12 +53,6 @@ public class ServerState implements JSONSerializable
 		this.state = state;
 	}
 
-	public void setQuestion(Question question)
-	{
-		this.currentQuestionObject = question;
-		this.setQuestionTimeout(getTime() + QUESTION_TIMEOUT_SEK);
-	}
-
 	public void setQuestionTimeout(long timeout) {
 		this.questionTimeout = timeout;
 	}
@@ -155,6 +149,7 @@ public class ServerState implements JSONSerializable
 
 	private void rollSimpleQuestions()  {
 		currentQuestionObject = getQuestionLoader().getQuestionForCountry(flow.getCurrentCountry().getCountryCode());
+		this.setQuestionTimeout(getTime() + QUESTION_TIMEOUT_SEK);
 	}
 
 	private long getTime() {
