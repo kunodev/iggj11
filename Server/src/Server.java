@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +24,6 @@ public class Server
 		HttpServer  server  = HttpServer.create(new InetSocketAddress(1337), 0);
 		HttpContext context = server.createContext("/", new RequestHandler(new ServerState()));
 		context.getFilters().add(new ParameterFilter());
-
 		server.start();
 	}
 
@@ -44,10 +42,11 @@ public class Server
 			this.actions.put(AbstractAction.ACTION_ANSWER_CHECK, new ActionAnswerCheck());
 			this.actions.put(AbstractAction.ACTION_ANSWER_CHECK_SUBMIT, new ActionAnswerCheckSubmit());
 
-//			state.addCountry(new Country("br", "Brasilien"));
+			state.sessionJSON.addCountry(new Country("br", "Brasilien"));
 			state.sessionJSON.addCountry(new Country("jp", "Japan"));
-//			state.addCountry(new Country("tr", "Türkei"));
+			//statsessionJSON.e.addCountry(new Country("tr", "Türkei"));
 			state.sessionJSON.addCountry(new Country("oz", "Australien"));
+			//statsessionJSON.e.addCountry(new Country("it", "Italien"));
 			state.sessionJSON.addCountry(new Country("de", "Deutschland"));
 			state.sessionJSON.addCountry(new Country("fr", "Frankreich"));
 			state.sessionJSON.addCountry(new Country("ru", "Russland"));
