@@ -1,6 +1,7 @@
 package State;
 
 import JSONUtil.JSONSerializable;
+import ServerUtil.Timeout;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import questions.Question;
@@ -144,7 +145,8 @@ public class ServerState implements JSONSerializable
 		this.flow.setNextRound(this.sessionJSON);
 
 		rollSimpleQuestions();
-		setState(ServerState.STATE_QUESTION);
+		setState(ServerState.STATE_WORLD);
+		Timeout.setTimeout( () -> setState(ServerState.STATE_QUESTION), 3000);
 	}
 
 	private void rollSimpleQuestions()  {
