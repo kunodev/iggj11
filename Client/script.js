@@ -1,7 +1,7 @@
 var userId = null;
 var state  = {};
 
-var SERVER_ADDRESS = 'http://172.18.11.160:1337/';
+var SERVER_ADDRESS = 'http://localhost:1337/';
 
 var backgroundLoop = new Howl(
     {
